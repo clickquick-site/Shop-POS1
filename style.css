@@ -1,1 +1,299 @@
 
+/* ---------- BASE ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  direction: rtl;
+  margin: 0;
+  background: #f5f7fa;
+  color: #111827;
+}
+
+/* ---------- LOGIN ---------- */
+#loginScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1f2937, #111827);
+}
+
+#loginScreen h3 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+#loginScreen input,
+#loginScreen select {
+  width: 240px;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+#loginScreen button {
+  width: 240px;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#loginScreen button:hover {
+  background: #2563eb;
+}
+
+/* ---------- HEADER ---------- */
+header {
+  background: #111827;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+header .clock-date {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+/* ---------- SIDE MENU ---------- */
+#menuBtn {
+  background: #2563eb;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#menuBtn:hover {
+  background: #1e40af;
+}
+
+#sideMenu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background: #f1f5f9;
+  width: 180px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  padding: 8px 0;
+  z-index: 1000;
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+#sideMenu.hidden {
+  display: none;
+}
+
+#sideMenu li {
+  list-style: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  color: #111827; /* النص الافتراضي للقوائم */
+}
+
+#sideMenu li:hover {
+  background: #2563eb;
+  color: white;
+}
+
+#sideMenu li button {
+  all: unset;
+  width: 100%;
+  text-align: right;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #ef4444; /* زر الخروج */
+  display: block;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+#sideMenu li button:hover {
+  color: white;
+  background: #ef4444;
+}
+
+/* ---------- PAGES ---------- */
+.page {
+  display: none;
+  padding: 20px;
+}
+
+.page.active {
+  display: block;
+}
+
+/* زر الرجوع */
+.page .backBtn {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 8px 16px;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.page .backBtn:hover {
+  background: #1e40af;
+}
+
+/* ---------- INPUTS ---------- */
+input, select {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: white;
+  width: 100%;
+}
+
+button {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  background: #10b981;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ---------- TABLE ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+th {
+  background: #1f2937;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* ---------- LIST ---------- */
+ul {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  list-style: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  animation: pop 0.2s ease;
+}
+
+.close {
+  float: left;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+@keyframes pop {
+  from { transform: scale(.9); opacity:.5 }
+  to { transform: scale(1); opacity:1 }
+}
+
+/* ---------- CLOCK & DATE TOP ---------- */
+#currentTime, #currentDate {
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  margin-top: 2px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:768px){
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  #sideMenu {
+    width: 150px;
+  }
+}
+
+/* ---------- BUTTON HIGHLIGHTS & ACCENTS ---------- */
+button, .backBtn, #menuBtn {
+  transition: all 0.2s ease-in-out;
+}
+
+#sideMenu li:hover, #sideMenu li button:hover {
+  transform: scale(1.02);
+}
