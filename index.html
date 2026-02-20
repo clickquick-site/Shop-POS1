@@ -1,1 +1,165 @@
 
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POS DZ</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- شاشة تسجيل الدخول -->
+<div id="loginScreen" class="loginBox">
+  <h3>تسجيل الدخول</h3>
+  <select id="userSelect"></select>
+  <input id="pin" type="password" placeholder="رمز PIN">
+  <button onclick="login()">دخول</button>
+</div>
+
+<!-- التطبيق الرئيسي -->
+<div id="mainApp" style="display:none;">
+
+  <!-- رأس التطبيق -->
+  <header>
+    <div class="header-right">
+      <h2 id="shopName">POS DZ</h2>
+      <p id="currentDate"></p>
+      <p id="currentTime"></p>
+    </div>
+    <div class="header-left">
+      <button id="menuBtn">☰</button>
+      <ul id="sideMenu" class="hidden">
+        <li onclick="show('sale')">واجهة البيع</li>
+        <li onclick="show('stock')">المخزون</li>
+        <li onclick="show('customers')">الزبائن</li>
+        <li onclick="show('alerts')">إدارة المستخدمين</li>
+        <li onclick="show('reports')">إدارة الأعمال</li>
+        <li onclick="show('settings')">الإعدادات</li>
+        <li><button id="logoutBtn" onclick="logout()">خروج</button></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- واجهة البيع -->
+  <section id="sale" class="page active">
+    <h3>واجهة البيع</h3>
+    <input id="search" placeholder="اسم أو باركود">
+    <button onclick="addItem()">إضافة</button>
+    <table>
+      <thead>
+        <tr>
+          <th>سلعة</th>
+          <th>كمية</th>
+          <th>سعر</th>
+          <th>مجموع</th>
+          <th>خيارات</th>
+        </tr>
+      </thead>
+      <tbody id="cart"></tbody>
+    </table>
+    <h3 id="total">0 دج</h3>
+    <input id="paid" placeholder="المبلغ المدفوع">
+    <select id="custSelect"></select>
+    <button onclick="pay()">تسديد</button>
+    <button onclick="partial()">تسديد جزئي</button>
+    <button onclick="toDebt()">دين</button>
+  </section>
+
+  <!-- المخزون -->
+  <section id="stock" class="page">
+    <button class="backBtn" onclick="goBack()">⬅ الرجوع</button>
+    <h3>المخزون</h3>
+    <input id="type" placeholder="نوع السلعة">
+    <input id="brand" placeholder="الماركة">
+    <input id="size" placeholder="الحجم">
+    <input id="barcode" placeholder="باركود">
+    <input id="price" placeholder="سعر البيع">
+    <input id="costPrice" placeholder="سعر الشراء">
+    <input id="qty" placeholder="كمية">
+    <input id="exp" type="date" placeholder="تاريخ الصلاحية">
+    <button onclick="saveItem()">حفظ</button>
+    <ul id="stockList"></ul>
+  </section>
+
+  <!-- الزبائن -->
+  <section id="customers" class="page">
+    <button class="backBtn" onclick="goBack()">⬅ الرجوع</button>
+    <h3>الزبائن</h3>
+    <input id="cname" placeholder="اسم الزبون">
+    <button onclick="addCustomer()">إضافة</button>
+    <ul id="clist"></ul>
+  </section>
+
+  <!-- إدارة المستخدمين -->
+  <section id="alerts" class="page">
+    <button class="backBtn" onclick="goBack()">⬅ الرجوع</button>
+    <h3>الصلاحيات / التنبيهات</h3>
+    <form id="addUserInAlerts">
+      <input type="text" id="alertUserName" placeholder="اسم المستخدم" required>
+      <input type="password" id="alertUserPin" placeholder="PIN (4 أرقام)" maxlength="4" required>
+      <select id="alertUserRole">
+        <option value="baker">بائع</option>
+        <option value="manager">مدير</option>
+      </select>
+      <button type="submit">إضافة مستخدم</button>
+    </form>
+    <ul id="alertList"></ul>
+  </section>
+
+  <!-- الإعدادات -->
+  <section id="settings" class="page">
+    <button class="backBtn" onclick="goBack()">⬅ الرجوع</button>
+    <h3>الإعدادات</h3>
+    <input id="sname" placeholder="اسم المحل">
+    <input id="sphone" placeholder="الهاتف">
+    <input id="saddr" placeholder="العنوان">
+    <button onclick="saveSettings()">حفظ</button>
+  </section>
+
+  <!-- إدارة الأعمال -->
+  <section id="reports" class="page">
+    <button class="backBtn" onclick="goBack()">⬅ الرجوع</button>
+    <h3>إدارة الأعمال</h3>
+    <div id="reportsBox">
+      <p>عدد عمليات البيع: <span id="rSales">0</span></p>
+      <p>إجمالي الإيرادات: <span id="rRevenue">0</span> دج</p>
+      <p>إجمالي تكلفة الشراء: <span id="rCost">0</span> دج</p>
+      <p>صافي الربح: <span id="rProfit">0</span> دج</p>
+    </div>
+  </section>
+
+  <!-- مودال إدارة المستخدمين -->
+  <div id="usersModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeUsersModal()">&times;</span>
+      <h2>إدارة المستخدمين</h2>
+      <form id="addUserForm">
+        <input type="text" id="newUserName" placeholder="اسم المستخدم" required>
+        <input type="password" id="newUserPin" placeholder="PIN (4 أرقام)" maxlength="4" required>
+        <select id="newUserRole">
+          <option value="baker">بائع</option>
+          <option value="manager">مدير</option>
+        </select>
+        <button type="submit">إضافة مستخدم</button>
+      </form>
+      <table id="usersTable">
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>PIN</th>
+            <th>الدور</th>
+            <th>خيارات</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
